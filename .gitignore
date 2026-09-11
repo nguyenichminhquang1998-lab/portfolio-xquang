@@ -1,0 +1,26 @@
+# Keep uploaded source media local. Only the optimized web assets below
+# belong in the site repository and deployment.
+assets/images/*
+!assets/images/hero-poster.webp
+!assets/images/work-orpc.webp
+!assets/images/work-thep-nhat-tien.webp
+!assets/images/work-thuy-san-anh-minh.webp
+!assets/images/work-con-cho-la-con-nho.webp
+!assets/images/work-pullupinmymind.webp
+!assets/images/case-pullupinmymind.webp
+!assets/images/case-hen-em-o-le-duong.webp
+!assets/images/denoise-texture.webp
+!assets/images/zalo-qr.webp
+
+assets/video/*
+!assets/video/hero-desktop.mp4
+!assets/video/hero-mobile.mp4
+
+assets/logos/*
+!assets/logos/client-orpc.webp
+!assets/logos/client-nhat-tien.webp
+!assets/logos/client-amfco.webp
+
+assets/fonts/*
+!assets/fonts/newsreader-variable.woff2
+!assets/fonts/OFL-Newsreader.txt

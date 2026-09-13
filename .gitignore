@@ -7,8 +7,10 @@ assets/images/*
 !assets/images/work-thuy-san-anh-minh.webp
 !assets/images/work-con-cho-la-con-nho.webp
 !assets/images/work-pullupinmymind.webp
+!assets/images/work-somewhere-between-sea-sunset.webp
 !assets/images/case-pullupinmymind.webp
 !assets/images/case-hen-em-o-le-duong.webp
+!assets/images/client-wavy.webp
 !assets/images/denoise-texture.webp
 !assets/images/zalo-qr.webp
 
@@ -20,6 +22,7 @@ assets/logos/*
 !assets/logos/client-orpc.webp
 !assets/logos/client-nhat-tien.webp
 !assets/logos/client-amfco.webp
+!assets/logos/client-wavy.webp
 
 assets/fonts/*
 !assets/fonts/newsreader-variable.woff2

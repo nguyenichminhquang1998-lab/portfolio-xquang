@@ -481,17 +481,6 @@ article[id] {
   color: var(--muted);
 }
 
-.work-grid__end {
-  display: flex;
-  min-height: 8rem;
-  align-items: end;
-  justify-content: end;
-  border-bottom: 1px solid var(--line);
-  color: var(--muted);
-  font-family: var(--font-mono);
-  font-size: 0.8125rem;
-}
-
 .case-study + .case-study {
   margin-top: 6rem;
   padding-top: 6rem;
@@ -605,6 +594,10 @@ article[id] {
   transition: opacity 700ms cubic-bezier(0.16, 1, 0.3, 1), transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+.client-tile__project--wavy {
+  object-position: center 72%;
+}
+
 .client-tile__wordmark,
 .client-grid__image,
 .client-tile__action {
@@ -646,11 +639,6 @@ article[id] {
 .client-tile:hover .client-grid__image,
 .client-tile:focus-visible .client-grid__image {
   transform: translateY(-4px);
-}
-
-.client-tile--text:hover .client-tile__wordmark,
-.client-tile--text:focus-visible .client-tile__wordmark {
-  color: var(--accent);
 }
 
 .client-grid__image {
@@ -916,6 +904,11 @@ textarea {
 
 input::placeholder {
   color: var(--muted);
+}
+
+input[readonly] {
+  color: var(--muted);
+  cursor: default;
 }
 
 .form-submit {

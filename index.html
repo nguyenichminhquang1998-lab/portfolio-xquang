@@ -33,14 +33,14 @@
       </div>
     </header>
 
-    <nav class="production-rail" aria-label="Production log">
-      <a href="#hero" aria-label="01 — Hero">01</a>
-      <a href="#selected-work" aria-label="02 — Selected Work">02</a>
-      <a href="#case-studies" aria-label="03 — Case Studies">03</a>
-      <a href="#process" aria-label="04 — Quy trình">04</a>
-      <a href="#bts" aria-label="05 — Hậu trường">05</a>
-      <a href="#clients" aria-label="06 — Khách hàng">06</a>
-      <a href="#brief" aria-label="07 — Gửi brief">07</a>
+    <nav class="production-rail" aria-label="Mục lục trang">
+      <a href="#hero"><span class="production-rail__number">01</span><span class="production-rail__label">Mở đầu</span></a>
+      <a href="#selected-work"><span class="production-rail__number">02</span><span class="production-rail__label">Dự án tiêu biểu</span></a>
+      <a href="#case-studies"><span class="production-rail__number">03</span><span class="production-rail__label">Hồ sơ dự án</span></a>
+      <a href="#process"><span class="production-rail__number">04</span><span class="production-rail__label">Quy trình</span></a>
+      <a href="#bts"><span class="production-rail__number">05</span><span class="production-rail__label">Trên hiện trường</span></a>
+      <a href="#clients"><span class="production-rail__number">06</span><span class="production-rail__label">Khách hàng</span></a>
+      <a href="#brief"><span class="production-rail__number">07</span><span class="production-rail__label">Gửi brief</span></a>
     </nav>
 
     <main id="main-content" tabindex="-1">
@@ -455,6 +455,20 @@
                 <span class="client-tile__action">Xem Vimeo / 2026</span>
               </a>
             </li>
+            <li>
+              <div class="client-tile" tabindex="0" role="group" aria-label="Union Marina — dự án năm 2026">
+                <img class="client-tile__project" src="assets/images/client-union-marina.webp" alt="" width="1600" height="900" loading="lazy" decoding="async">
+                <img class="client-grid__image" src="assets/logos/client-union-marina.svg" alt="" width="8350" height="2750" loading="lazy" decoding="async">
+                <span class="client-tile__action">Dự án / 2026</span>
+              </div>
+            </li>
+            <li>
+              <div class="client-tile" tabindex="0" role="group" aria-label="Lam Homestay — dự án năm 2026">
+                <img class="client-tile__project" src="assets/images/client-lam-homestay.webp" alt="" width="1600" height="900" loading="lazy" decoding="async">
+                <img class="client-grid__image" src="assets/logos/client-lam-homestay.webp" alt="" width="720" height="420" loading="lazy" decoding="async">
+                <span class="client-tile__action">Dự án / 2026</span>
+              </div>
+            </li>
           </ul>
         </div>
       </section>
@@ -563,6 +577,7 @@
             class="brief-form"
             name="project-brief"
             method="POST"
+            action="/cam-on"
             enctype="multipart/form-data"
             data-netlify="true"
             netlify-honeypot="bot-field"
@@ -582,7 +597,12 @@
               <input id="email" name="email" type="email" autocomplete="email" required>
             </div>
 
-            <div class="form-field form-field--wide">
+            <div class="form-field">
+              <label for="phone">Số điện thoại <span>(không bắt buộc)</span></label>
+              <input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="Ví dụ: 09xx xxx xxx">
+            </div>
+
+            <div class="form-field">
               <label for="organization">Doanh nghiệp / Nghệ sĩ <span>(không bắt buộc)</span></label>
               <input id="organization" name="organization" type="text" autocomplete="organization">
             </div>
@@ -598,9 +618,19 @@
               </select>
             </div>
 
-            <div class="form-field form-field--wide">
+            <div class="form-field">
               <label for="timeline">Thời gian mong muốn <span>(không bắt buộc)</span></label>
               <input id="timeline" name="timeline" type="text" placeholder="Ví dụ: cần phát hành trong tháng 11">
+            </div>
+
+            <div class="form-field form-field--wide" id="other-project-type-field" hidden>
+              <label for="other-project-type">Mô tả loại dự án</label>
+              <input
+                id="other-project-type"
+                name="other-project-type"
+                type="text"
+                placeholder="Ví dụ: phim giới thiệu, sự kiện, nội dung mạng xã hội..."
+              >
             </div>
 
             <div class="form-field form-field--wide">
@@ -618,15 +648,39 @@
                 aria-describedby="attachment-hint attachment-error"
               >
               <p class="form-field__hint" id="attachment-hint">
-                01 file PDF, Word, Excel, PowerPoint hoặc TXT — tối đa 7 MB.
+                Tải trực tiếp 01 file PDF, Word, Excel, PowerPoint hoặc TXT — tối đa 7 MB.
               </p>
               <p class="form-field__error" id="attachment-error" aria-live="polite"></p>
             </div>
 
+            <div class="form-field form-field--wide">
+              <label for="document-link">Link tài liệu dung lượng lớn <span>(không bắt buộc)</span></label>
+              <input
+                id="document-link"
+                name="document-link"
+                type="url"
+                inputmode="url"
+                autocomplete="url"
+                placeholder="Google Drive, Dropbox, WeTransfer..."
+                aria-describedby="document-link-hint"
+              >
+              <p class="form-field__hint" id="document-link-hint">
+                Dùng khi file lớn hơn 7 MB. Hãy bật quyền xem bằng link trước khi gửi.
+              </p>
+            </div>
+
             <div class="form-field form-field--wide form-submit">
               <button class="button button--primary" type="submit">Gửi brief</button>
+              <p class="form-submit__status" id="brief-form-status" role="status" aria-live="polite"></p>
             </div>
           </form>
+
+          <div class="brief-success" id="brief-success" tabindex="-1" hidden>
+            <p class="section-kicker">BRIEF ĐÃ ĐƯỢC GỬI</p>
+            <h3>Cảm ơn bạn.</h3>
+            <p>XQuang cảm ơn bạn đã gửi brief và sẽ liên hệ lại trong thời gian sớm nhất.</p>
+            <a class="button button--secondary" href="#hero">Về đầu trang</a>
+          </div>
         </section>
       </div>
     </main>

@@ -133,6 +133,13 @@ Phần trên là toàn bộ quy tắc cũ và được giữ nguyên. Phần b�
 - **Quy tắc mới thay thế phần ngân sách ở trên:** form bỏ hoàn toàn trường ngân sách, không dùng dropdown và cũng không hiển thị field tĩnh “Sẽ trao đổi trực tiếp”.
 - Form nhận một tài liệu không bắt buộc: PDF, Word, Excel, PowerPoint hoặc TXT; tối đa 7 MB ở phía trình duyệt.
 - Backend vẫn là Netlify Forms + honeypot; việc nhận form, file và email notification chỉ được coi là xong sau khi test trên bản deploy thật.
+- Mục điều hướng đánh số 01–07 ở desktop phải có nút mở mục lục để hiện rõ tên từng section; hỗ trợ chuột, bàn phím và phím Escape.
+- File lớn hơn 7 MB dùng trường link tài liệu không bắt buộc (Google Drive, Dropbox hoặc WeTransfer); không tăng giới hạn tải trực tiếp khi Netlify Forms vẫn giới hạn toàn bộ request ở 8 MB.
+- **Quy tắc mới thay thế cách mở mục lục bằng nút ở trên:** trên desktop, đưa chuột vào dải số 01–07 thì mục lục tự mở; di chuột ra thì tự đóng. Bàn phím vẫn mở mục lục bằng `focus-within`.
+- Form có thêm số điện thoại không bắt buộc; khi chọn loại dự án `Khác`, ô mô tả loại dự án tự hiện và nhận focus.
+- Gửi brief thành công hiển thị ô cảm ơn ngay trong trang; `/cam-on` là trang cảm ơn dự phòng khi JavaScript không chạy.
+- Netlify Forms mặc định không tự gửi email xác nhận cho người điền form. Không được nói auto-email đã hoạt động trước khi có dịch vụ gửi mail, địa chỉ người gửi hợp lệ và test thật trên bản deploy.
+- Client Index có thêm Union Marina và Lam Homestay bằng logo/ảnh thật do XQuang cung cấp; chưa có link dự án công khai thì không tự tạo link.
 
 ## Thứ tự đọc context bắt buộc
 

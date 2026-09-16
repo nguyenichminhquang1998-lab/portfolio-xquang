@@ -90,8 +90,35 @@ document.querySelectorAll(".video-facade").forEach((facade) => {
   });
 });
 
+const projectTypeSelect = document.querySelector("#project-type");
+const otherProjectTypeField = document.querySelector("#other-project-type-field");
+const otherProjectTypeInput = document.querySelector("#other-project-type");
+
+const updateOtherProjectType = (shouldFocus = false) => {
+  if (!projectTypeSelect || !otherProjectTypeField || !otherProjectTypeInput) {
+    return;
+  }
+
+  const isOtherProjectType = projectTypeSelect.value === "khac";
+  otherProjectTypeField.hidden = !isOtherProjectType;
+  otherProjectTypeInput.disabled = !isOtherProjectType;
+  otherProjectTypeInput.required = isOtherProjectType;
+
+  if (!isOtherProjectType) {
+    otherProjectTypeInput.value = "";
+  } else if (shouldFocus) {
+    otherProjectTypeInput.focus();
+  }
+};
+
+if (projectTypeSelect) {
+  projectTypeSelect.addEventListener("change", () => updateOtherProjectType(true));
+  updateOtherProjectType();
+}
+
 const attachmentInput = document.querySelector("#attachment");
 const attachmentError = document.querySelector("#attachment-error");
+const documentLinkInput = document.querySelector("#document-link");
 
 if (attachmentInput && attachmentError) {
   const allowedExtensions = ["pdf", "doc", "docx", "xls", "xlsx", "ppt", "pptx", "txt"];
@@ -116,9 +143,64 @@ if (attachmentInput && attachmentError) {
     }
 
     if (file.size > maximumFileSize) {
-      const message = "File vượt quá 7 MB. Vui lòng giảm dung lượng hoặc gửi đường dẫn trong brief.";
-      attachmentInput.setCustomValidity(message);
+      const message = "File vượt quá 7 MB nên chưa được đính kèm. Vui lòng dùng ô “Link tài liệu dung lượng lớn” bên dưới.";
+      attachmentInput.value = "";
       attachmentError.textContent = message;
+    }
+  });
+
+  if (documentLinkInput) {
+    documentLinkInput.addEventListener("input", () => {
+      if (documentLinkInput.value.trim()) {
+        attachmentError.textContent = "";
+      }
+    });
+  }
+}
+
+const briefForm = document.querySelector(".brief-form");
+const briefFormStatus = document.querySelector("#brief-form-status");
+const briefSuccess = document.querySelector("#brief-success");
+
+if (briefForm && briefFormStatus && briefSuccess) {
+  const submitButton = briefForm.querySelector('button[type="submit"]');
+
+  briefForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    if (!briefForm.reportValidity()) {
+      return;
+    }
+
+    briefFormStatus.textContent = "";
+
+    if (submitButton) {
+      submitButton.disabled = true;
+      submitButton.textContent = "Đang gửi...";
+    }
+
+    try {
+      const response = await fetch("/", {
+        method: "POST",
+        body: new FormData(briefForm),
+      });
+
+      if (!response.ok) {
+        throw new Error("Brief submission failed");
+      }
+
+      briefForm.reset();
+      updateOtherProjectType();
+      briefForm.hidden = true;
+      briefSuccess.hidden = false;
+      briefSuccess.focus();
+    } catch {
+      briefFormStatus.textContent = "Chưa gửi được brief. Vui lòng thử lại hoặc liên hệ trực tiếp với XQuang.";
+    } finally {
+      if (submitButton) {
+        submitButton.disabled = false;
+        submitButton.textContent = "Gửi brief";
+      }
     }
   });
 }

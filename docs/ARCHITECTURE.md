@@ -50,13 +50,18 @@ portfolio-xquang/
 - `enctype="multipart/form-data"` để hỗ trợ file đính kèm.
 - Chỉ một input file, các đuôi chấp nhận: `.pdf`, `.doc`, `.docx`, `.xls`, `.xlsx`, `.ppt`, `.pptx`, `.txt`.
 - JavaScript chặn file lớn hơn 7 MB và đuôi không hợp lệ trước khi submit.
+- File lớn hơn 7 MB được gửi bằng trường URL riêng; khi người dùng chọn file quá giới hạn, input file được xóa để không chặn việc gửi link.
+- Netlify Forms giới hạn toàn bộ request ở 8 MB, không phải chỉ phần file; vì vậy giữ ngưỡng tải trực tiếp 7 MB để chừa dung lượng cho các trường còn lại và multipart overhead.
 - Đây là validation phía trình duyệt, không thay thế giới hạn request và kiểm tra của Netlify.
-- Form submit theo luồng HTML thông thường; việc Netlify nhận form, nhận file và gửi notification phải được test trên bản deploy thật.
+- Form submit bằng `fetch` với `FormData` để giữ file upload và hiển thị trạng thái cảm ơn ngay trong trang; `action="/cam-on"` là fallback HTML khi JavaScript không chạy.
+- Netlify email notification mặc định gửi cho chủ website và dùng trường `email` làm Reply-To; email xác nhận gửi ngược lại cho khách cần form-triggered function hoặc dịch vụ tự động hóa/email bên ngoài.
+- Việc Netlify nhận form, nhận file, hiện trạng thái thành công và gửi notification/email phải được test trên bản deploy thật.
 
 ## 5. CSS, motion và accessibility
 
 - Mobile-first, ưu tiên layout ổn định cross-browser.
 - Focus bàn phím phải nhìn thấy rõ; vùng bấm trên mobile tối thiểu 44 px.
+- Mục lục desktop tự mở bằng `:hover` và `:focus-within`, tự đóng khi chuột hoặc focus rời khỏi dải điều hướng; các link dùng nhãn tiếng Việt nhìn thấy được khi mở.
 - Motion chỉ dùng opacity fade và `translateY` tối đa 24 px, easing `cubic-bezier(0.16, 1, 0.3, 1)`, 600–800 ms.
 - Reduced motion phải tắt hành vi không cần thiết ở cả CSS và JavaScript.
 - Grain/xước được triển khai như lớp texture nhẹ, không chặn pointer và không làm chữ mất tương phản.

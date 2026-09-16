@@ -32,6 +32,8 @@ Nhãn vai trò ngắn ở Hero: **Director / Cinematographer**. Không liệt k�
 6. Đã thực hiện cùng — Client Index.
 7. Liên hệ và gửi brief — thông tin liên hệ được giới thiệu riêng, form có tiêu đề riêng.
 
+Trên desktop, đưa chuột vào dải số 01–07 sẽ tự mở mục lục; di chuột ra ngoài sẽ tự đóng. Khi dùng bàn phím, mục lục mở lúc link nhận focus.
+
 Không tự thêm section About, Services hoặc Testimonials theo mẫu nếu chưa được XQuang duyệt.
 
 ## 4. Dự án tiêu biểu
@@ -88,7 +90,7 @@ Mọi case study phải giữ đúng thứ tự: Role / Scope / Credits → Deci
 
 ## 7. Client Index
 
-ORPC, Thép Nhật Tiến, AMFCO / Thủy sản Anh Minh, Rollin, Shartnuss và Wavy Channel.
+ORPC, Thép Nhật Tiến, AMFCO / Thủy sản Anh Minh, Rollin, Shartnuss, Wavy Channel, Union Marina và Lam Homestay.
 
 Logo khách hàng dùng như chỉ mục dẫn tới dự án tương ứng; không dùng làm marquee trang trí vô cớ.
 
@@ -98,13 +100,18 @@ Form gồm:
 
 - Tên.
 - Email.
+- Số điện thoại — không bắt buộc.
 - Doanh nghiệp / nghệ sĩ — không bắt buộc.
 - Loại dự án.
+- Mô tả loại dự án — chỉ hiện và bắt buộc khi chọn `Khác`.
 - Thời gian mong muốn — không bắt buộc.
 - Brief ngắn.
 - Một tài liệu đính kèm — không bắt buộc; PDF, Word, Excel, PowerPoint hoặc TXT; tối đa 7 MB ở phía trình duyệt.
+- Một link tài liệu dung lượng lớn — không bắt buộc; dùng cho Google Drive, Dropbox, WeTransfer hoặc dịch vụ tương đương khi file lớn hơn 7 MB.
 
 Form **không hỏi khoảng ngân sách**. Backend mục tiêu: Netlify Forms kèm honeypot.
+
+Sau khi Netlify nhận brief, trang hiển thị ô cảm ơn ngay tại form. Trang `/cam-on` là phương án dự phòng khi JavaScript không chạy. Email xác nhận tự động cho khách chưa được coi là hoạt động cho tới khi có dịch vụ gửi mail, địa chỉ người gửi hợp lệ và test trên bản deploy.
 
 Thông tin liên hệ đã xác nhận:
 

@@ -103,6 +103,40 @@
 - Quyết định: Giữ Segoe UI / system sans cho body; không chuyển sang IBM Plex Sans trong release hiện tại.
 - Lý do: XQuang đã duyệt giao diện hiện tại và chốt phương án font ở bước review trước release.
 
+### D-014 — Dải số mở thành mục lục
+
+- Ngày ghi nhận: 2026-09-16
+- Trạng thái: Accepted
+- Quyết định: Trên desktop, dải số 01–07 có nút mở thành mục lục và hiển thị tên tiếng Việt của từng section.
+- Lý do: Người xem cần hiểu mỗi số dẫn tới nội dung nào trước khi điều hướng.
+
+### D-015 — File lớn gửi bằng link
+
+- Ngày ghi nhận: 2026-09-16
+- Trạng thái: Accepted
+- Quyết định: Giữ tải file trực tiếp tối đa 7 MB và thêm trường link tài liệu không bắt buộc cho file lớn hơn.
+- Lý do: Netlify Forms giới hạn toàn bộ request ở 8 MB; tăng input lên sát giới hạn làm lượt gửi dễ lỗi vì còn dữ liệu form và multipart overhead.
+
+### D-016 — Mục lục tự mở khi hover
+
+- Ngày ghi nhận: 2026-09-16
+- Trạng thái: Accepted
+- Quyết định: Trên desktop, dải số 01–07 tự mở mục lục khi hover và tự đóng khi chuột rời đi; bàn phím dùng `focus-within`.
+- Thay thế: Cách mở/đóng bằng nút trong D-014.
+
+### D-017 — Form brief phản hồi theo ngữ cảnh
+
+- Ngày ghi nhận: 2026-09-16
+- Trạng thái: Accepted
+- Quyết định: Thêm số điện thoại; khi chọn `Khác` thì hiện ô mô tả loại dự án; sau khi gửi thành công hiện ô cảm ơn trong trang và có `/cam-on` làm fallback.
+- Lý do: Giảm bước đoán của khách và xác nhận rõ brief đã được nhận.
+
+### D-018 — Thêm Union Marina và Lam Homestay
+
+- Ngày ghi nhận: 2026-09-16
+- Trạng thái: Accepted
+- Quyết định: Thêm Union Marina và Lam Homestay vào Client Index với logo và ảnh nền do XQuang cung cấp; chưa gắn link dự án khi chưa có URL công khai được xác nhận.
+
 ## Chưa chốt
 
 - GitHub auto-deploy Netlify và domain public chính thức.

@@ -10,8 +10,9 @@ Tài liệu này là bảng bàn giao ngắn cho phiên tiếp theo. Nó mô t�
 - Remote: `origin` → `https://github.com/nguyenichminhquang1998-lab/portfolio-xquang.git`.
 - Baseline rollback: `d40441d` — giữ nguyên.
 - Preview release: commit `adde177`, tag `v0.9.0-preview` — giữ nguyên.
-- Release candidate đã qua review local và được XQuang cho phép tạo commit ngày 2026-09-16.
-- Chưa push và chưa deploy đợt thay đổi này.
+- Release hiện tại: commit `69f72a4` (`feat: finalize XQuang portfolio release candidate`).
+- `main` và `origin/main` đang cùng ở commit `69f72a4` trước các thay đổi local của lượt này.
+- Working tree đang có thay đổi chưa commit cho mục lục 01–07, form brief và client index.
 
 ## 2. Những thay đổi đang có trong working tree
 
@@ -30,6 +31,11 @@ Tài liệu này là bảng bàn giao ngắn cho phiên tiếp theo. Nó mô t�
 - Body font đã chốt giữ Segoe UI / system sans cho release hiện tại.
 - Selected Work hiển thị `Pullupinmymind` và đã chỉnh lại khoảng cách giữa metadata, tên dự án và vai trò.
 - Footer đã thêm địa chỉ tại Lê Hồng Phong, Ngô Quyền, Hải Phòng.
+- Dải số 01–07 trên desktop tự mở thành mục lục khi rê chuột hoặc dùng bàn phím focus, và tự thu gọn khi rời khỏi vùng mục lục.
+- Form giữ tải trực tiếp tối đa 7 MB; file quá giới hạn được bỏ khỏi input và hướng người dùng sang ô link Google Drive/Dropbox/WeTransfer riêng.
+- Form đã thêm số điện thoại không bắt buộc; khi chọn loại dự án `Khác`, ô mô tả loại dự án tự hiện, nhận focus và trở thành bắt buộc.
+- Khi Netlify nhận brief thành công, form được thay bằng lời cảm ơn ngay trên trang; `/cam-on` là trang dự phòng khi JavaScript không chạy.
+- Client index đã thêm Union Marina và Lam Homestay bằng logo và ảnh nền do XQuang cung cấp; không tự gắn link dự án khi chưa có URL thật.
 
 ### Hệ thống tài liệu
 
@@ -43,7 +49,7 @@ Tài liệu này là bảng bàn giao ngắn cho phiên tiếp theo. Nó mô t�
 
 - Local preview: `http://127.0.0.1:4173/` khi server local đang chạy.
 - Netlify preview riêng: `https://sunny-gumdrop-b0e0ae.netlify.app`.
-- Bản Netlify hiện tại được tạo bằng Drop thủ công và **chưa gồm** các thay đổi chưa commit nêu trên.
+- Bản Netlify hiện tại được tạo bằng Drop thủ công từ release `69f72a4` và **chưa gồm** thay đổi mục lục/link tài liệu của lượt này.
 - Netlify đã nhận diện form `project-brief` ở bản deploy cũ.
 - Chưa coi email notification và luồng nhận file mới là đã hoạt động cho tới khi deploy bản mới và gửi thử thật.
 - Chưa cấu hình GitHub auto-deploy.
@@ -82,17 +88,36 @@ Sau review toàn bộ diff trước release ngày 2026-09-13:
 - `AGENTS.md` và `CLAUDE.md` giống nhau; Segoe UI / system sans đã được ghi nhận là quyết định Accepted.
 - Netlify Form, file upload và email notification vẫn là kiểm tra bắt buộc sau khi deploy, không được xem là đã xác minh bằng local review.
 
+Sau lượt sửa mục lục và luồng tài liệu lớn ngày 2026-09-16:
+
+- `node --check script.js` và `git diff --check` pass.
+- 43 HTML ID là duy nhất; 20 link nội bộ có đích hợp lệ; 30 đường dẫn file local đều tồn tại.
+- `AGENTS.md` và `CLAUDE.md` vẫn giống nhau; form chỉ có một trường `document-link`.
+- Desktop 1440 px: mục lục mở/đóng đúng, Escape đóng và mục 02 dẫn đúng tới `#selected-work`.
+- Mobile 390 px: mục lục ẩn theo layout hiện tại, không có tràn ngang; ô link tài liệu và nút gửi hiển thị đầy đủ.
+- File TXT 7 MB + 1 byte bị bỏ khỏi input, hiện hướng dẫn dùng link và không còn chặn người dùng tiếp tục với link.
+
+Sau lượt sửa mục lục, form brief và client index ngày 2026-09-16:
+
+- Mục lục desktop được đo mở từ 52 px lên 216 px khi hover, nhãn hiện hoàn toàn; sau khi rời chuột tự thu về 52 px và ẩn nhãn.
+- Khi chọn `Khác`, ô mô tả hiện ra, trở thành bắt buộc và tự nhận focus.
+- Desktop 1440 px và mobile 390 px không có tràn ngang; trường số điện thoại dùng đúng kiểu `tel` và `autocomplete="tel"`.
+- Union Marina hiển thị logo trên ảnh tàu; Lam Homestay hiển thị logo trên ảnh căn phòng; bố cục client desktop cân thành 2 hàng × 4 cột.
+- Trang cảm ơn dự phòng hiển thị đúng thông điệp và không có tràn ngang.
+- Email xác nhận tự động cho người gửi chưa được bật: Netlify Forms mặc định chỉ gửi notification tới người quản trị, nên cần dịch vụ gửi mail và địa chỉ người gửi đã xác minh.
+
 ## 5. Việc tiếp theo theo thứ tự an toàn
 
-1. Xác minh release commit, danh sách file và working tree sạch; không sửa hoặc xóa baseline/tag cũ.
-2. Sau khi XQuang cho phép, push commit lên GitHub.
-3. Tạo gói deploy từ đúng commit và cập nhật Netlify preview.
-4. Gửi thử form trên Netlify: nội dung, honeypot, file đính kèm và email notification.
-5. Chạy mobile QA, PageSpeed Insights và Client Simulation trước khi public.
+1. XQuang xem lại mục lục hover, form brief và hai client mới trên local preview.
+2. Chọn cách gửi email xác nhận tự động, cung cấp dịch vụ gửi mail cùng địa chỉ người gửi/domain đã xác minh, rồi mới tích hợp và gửi thử.
+3. Sau khi XQuang chốt, tạo commit mới; chỉ push/deploy khi có yêu cầu rõ ràng cho từng hành động.
+4. Khi deploy, xác nhận Netlify nhận diện các trường `phone`, `other-project-type` và `document-link` trong form `project-brief`.
+5. Gửi thử form trên Netlify: nội dung, trạng thái cảm ơn, honeypot, file nhỏ, link tài liệu, notification cho XQuang và email xác nhận cho khách (sau khi đã tích hợp dịch vụ mail).
+6. Chạy PageSpeed Insights và Client Simulation trước vòng public tiếp theo.
 
 ## 6. Việc còn treo
 
-- Cấu hình email notification cho form.
+- Cấu hình email notification cho XQuang và dịch vụ gửi email xác nhận tự động cho khách.
 - Kiểm tra giới hạn file/request thực tế trên gói Netlify tại thời điểm deploy.
 - Quyết định GitHub auto-deploy, tên miền Netlify dễ nhớ và domain chính thức.
 - PageSpeed mobile và SEO content là vòng sau; AI SEO riêng sẽ xử lý nội dung SEO theo brief của XQuang.

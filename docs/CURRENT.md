@@ -10,9 +10,9 @@ Tài liệu này là bảng bàn giao ngắn cho phiên tiếp theo. Nó mô t�
 - Remote: `origin` → `https://github.com/nguyenichminhquang1998-lab/portfolio-xquang.git`.
 - Baseline rollback: `d40441d` — giữ nguyên.
 - Preview release: commit `adde177`, tag `v0.9.0-preview` — giữ nguyên.
-- Release hiện tại: commit `69f72a4` (`feat: finalize XQuang portfolio release candidate`).
-- `main` và `origin/main` đang cùng ở commit `69f72a4` trước các thay đổi local của lượt này.
-- Working tree đang có thay đổi chưa commit cho mục lục 01–07, form brief và client index.
+- Release hiện tại: commit `75c2a01` (`feat: improve brief flow and client index`), đã commit và push lên `origin/main`.
+- `main` và `origin/main` đang cùng ở commit `75c2a01`.
+- Working tree sạch, không có thay đổi chưa commit.
 
 ## 2. Những thay đổi đang có trong working tree
 

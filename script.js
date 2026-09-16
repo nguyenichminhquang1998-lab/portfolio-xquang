@@ -89,3 +89,36 @@ document.querySelectorAll(".video-facade").forEach((facade) => {
     iframe.focus();
   });
 });
+
+const attachmentInput = document.querySelector("#attachment");
+const attachmentError = document.querySelector("#attachment-error");
+
+if (attachmentInput && attachmentError) {
+  const allowedExtensions = ["pdf", "doc", "docx", "xls", "xlsx", "ppt", "pptx", "txt"];
+  const maximumFileSize = 7 * 1024 * 1024;
+
+  attachmentInput.addEventListener("change", () => {
+    const [file] = attachmentInput.files;
+    attachmentInput.setCustomValidity("");
+    attachmentError.textContent = "";
+
+    if (!file) {
+      return;
+    }
+
+    const extension = file.name.split(".").pop()?.toLowerCase();
+
+    if (!extension || !allowedExtensions.includes(extension)) {
+      const message = "Chỉ nhận file PDF, Word, Excel, PowerPoint hoặc TXT.";
+      attachmentInput.setCustomValidity(message);
+      attachmentError.textContent = message;
+      return;
+    }
+
+    if (file.size > maximumFileSize) {
+      const message = "File vượt quá 7 MB. Vui lòng giảm dung lượng hoặc gửi đường dẫn trong brief.";
+      attachmentInput.setCustomValidity(message);
+      attachmentError.textContent = message;
+    }
+  });
+}

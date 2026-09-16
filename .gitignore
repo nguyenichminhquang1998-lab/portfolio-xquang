@@ -13,6 +13,9 @@ assets/images/*
 !assets/images/client-wavy.webp
 !assets/images/denoise-texture.webp
 !assets/images/zalo-qr.webp
+!assets/images/bts-orpc-review.webp
+!assets/images/bts-orpc-team.webp
+!assets/images/bts-orpc-camera.webp
 
 assets/video/*
 !assets/video/hero-desktop.mp4

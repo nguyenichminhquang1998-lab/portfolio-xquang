@@ -52,8 +52,7 @@ Typography:
     Ghi chú mở: đây là lựa chọn thẩm mỹ đẹp nhưng KHÔNG cùng họ với logo
     Denoise Production House gốc (logo là sans bo tròn đậm). Đây là đánh đổi thẩm mỹ vs
     nhất quán thương hiệu đã được XQuang biết và chấp nhận giữ nguyên.
-  Body: hệ thống hiện tại — cần xác nhận IBM Plex Sans hay giữ Segoe UI
-    (xem mục 3, việc cần xác minh — CHƯA chốt).
+  Body: Segoe UI / system sans — ĐÃ CHỐT, giữ nguyên.
   Mono: system stack (`ui-monospace, SFMono-Regular, Menlo, Consolas`).
   CẤM mặc định: Inter, Roboto, Poppins, Montserrat, Open Sans, Lato. Mọi
   lựa chọn font phải kèm lý do art direction.
@@ -118,3 +117,84 @@ ngày làm việc — giữ nguyên.
 Baseline trước các sửa đổi bản chốt cứng: commit `d40441d` (`chore:
 baseline portfolio before final revisions`). Giữ đây là điểm rollback;
 không ghi đè hoặc xóa baseline.
+
+---
+
+# QUY TẮC BỔ SUNG — Cấu trúc context và trạng thái mới
+
+Phần trên là toàn bộ quy tắc cũ và được giữ nguyên. Phần bổ sung này ghi nhận các quyết định mới hơn và cách Claude/Codex phải đọc repository. Nếu một câu trong phần bổ sung ghi rõ “thay thế”, câu đó có hiệu lực thay cho nội dung cũ tương ứng nhưng không xóa lịch sử cũ.
+
+## Cập nhật sản phẩm đã chốt sau bản cũ
+
+- Hero dùng nhãn vai trò ngắn: `Director / Cinematographer`; không liệt kê toàn bộ vai trò tại Hero.
+- Tiêu đề section là `Dự án tiêu biểu`; phần dẫn mở đầu bằng ba TVC doanh nghiệp.
+- Sau Process có section `Trên hiện trường`, dùng ảnh BTS thật của XQuang cùng Denoise Production House.
+- Client Index là section 06; Brief là section 07.
+- **Quy tắc mới thay thế phần ngân sách ở trên:** form bỏ hoàn toàn trường ngân sách, không dùng dropdown và cũng không hiển thị field tĩnh “Sẽ trao đổi trực tiếp”.
+- Form nhận một tài liệu không bắt buộc: PDF, Word, Excel, PowerPoint hoặc TXT; tối đa 7 MB ở phía trình duyệt.
+- Backend vẫn là Netlify Forms + honeypot; việc nhận form, file và email notification chỉ được coi là xong sau khi test trên bản deploy thật.
+
+## Thứ tự đọc context bắt buộc
+
+Trước khi lập kế hoạch hoặc sửa code, đọc đủ theo thứ tự:
+
+1. `docs/PRODUCT.md` — sản phẩm dành cho ai, nội dung thật và mục tiêu chuyển đổi.
+2. `docs/ARCHITECTURE.md` — cấu trúc kỹ thuật, media, form và cách deploy.
+3. `docs/DECISIONS.md` — các quyết định đã được XQuang chốt.
+4. `docs/CURRENT.md` — trạng thái Git, việc đang dở và bước tiếp theo.
+
+Các file trong `docs/archive/` chỉ là lịch sử tham khảo, không phải yêu cầu hiện hành.
+
+## Thứ tự ưu tiên khi có mâu thuẫn
+
+1. Yêu cầu trực tiếp mới nhất của XQuang trong phiên hiện tại.
+2. Quy tắc trong `AGENTS.md` và `CLAUDE.md`.
+3. Quyết định `Accepted` mới nhất trong `docs/DECISIONS.md`.
+4. `docs/PRODUCT.md` và `docs/ARCHITECTURE.md`.
+5. `docs/CURRENT.md` chỉ mô tả trạng thái, không tự tạo quyết định chiến lược.
+
+Nếu hai nguồn vẫn mâu thuẫn hoặc có nhiều cách hiểu làm thay đổi kết quả, dừng lại, nêu rõ điểm chưa chắc và hỏi XQuang trước khi sửa.
+
+## Suy nghĩ trước khi code
+
+- Nêu rõ giả định trước khi làm. Không chắc thì hỏi; không đoán dữ kiện dự án.
+- Nếu có nhiều cách hiểu, trình bày ngắn gọn các cách và ảnh hưởng.
+- Nói thẳng khi có giải pháp đơn giản, ổn định hoặc ít rủi ro hơn.
+- Với task nhiều bước, dùng kế hoạch ngắn: `Bước → cách kiểm tra`.
+- Không bịa credit, vai trò, kết quả, số liệu, quyền sử dụng asset hoặc lời chứng thực.
+
+## Đơn giản và sửa đúng phạm vi
+
+- Source tiếp tục là `index.html`, `style.css`, `script.js` ở root; không tạo `src/` khi project chưa có build step.
+- Viết lượng code tối thiểu giải quyết đúng yêu cầu; không thêm abstraction hoặc config “để sau này”.
+- Chỉ sửa phần liên quan trực tiếp; giữ style hiện có và không tiện tay refactor phần đang chạy tốt.
+- Giữ nguyên thay đổi chưa commit của người dùng hoặc agent khác.
+- Nếu thay đổi tạo code thừa, chỉ dọn phần thừa do chính thay đổi đó sinh ra.
+
+## Mục tiêu kiểm chứng được
+
+- Chạy `node --check script.js` sau khi sửa JavaScript.
+- Chạy `git diff --check` trước khi bàn giao.
+- Sau khi sửa markup, kiểm tra asset path, HTML ID và link nội bộ.
+- Khi sửa giao diện, xem local preview; kiểm tra desktop, mobile, focus bàn phím và `prefers-reduced-motion` nếu phần liên quan bị tác động.
+- Không lấy việc code hợp lệ làm bằng chứng cho Netlify Form, upload hoặc video trên bản deploy.
+
+## Cập nhật tài liệu
+
+- Cập nhật `docs/CURRENT.md` sau mỗi đợt thay đổi đáng kể.
+- Chỉ cập nhật `docs/DECISIONS.md` khi XQuang đã chốt quyết định.
+- Cập nhật `docs/PRODUCT.md` khi sự thật sản phẩm thay đổi.
+- Cập nhật `docs/ARCHITECTURE.md` khi kiến trúc, hosting, form hoặc pipeline thay đổi.
+- Không sửa tài liệu trong `docs/archive/` để làm nó khớp với hiện tại.
+- `AGENTS.md` và `CLAUDE.md` phải giữ cùng nội dung. Khi sửa quy tắc, cập nhật cả hai trong cùng một task và kiểm tra chúng giống nhau.
+
+## Git và phối hợp agent
+
+- Không commit, push, deploy, đổi quyền truy cập hoặc gửi dữ liệu ra dịch vụ ngoài nếu yêu cầu hiện tại chưa bao gồm hành động đó.
+- Không dùng `git reset --hard`, force-push hoặc xóa baseline/tag release.
+- Nếu Claude và Codex làm đồng thời: dùng branch/worktree riêng, một người sở hữu mỗi file dùng chung trong một task, review diff và để XQuang quyết định merge.
+- Sau merge phải chạy lại kiểm tra; merge sạch về chữ không đảm bảo logic đúng.
+
+## Tiêu chí hoàn thành
+
+Task chỉ hoàn thành khi yêu cầu đã được thực hiện, kiểm tra liên quan đã chạy, `docs/CURRENT.md` phản ánh đúng trạng thái và mọi việc chưa xác minh được ghi rõ.

@@ -1,6 +1,6 @@
 # CURRENT — Trạng thái làm việc hiện tại
 
-Cập nhật: **2026-09-16 — Asia/Saigon**
+Cập nhật: **2026-09-17 — Asia/Saigon**
 
 Tài liệu này là bảng bàn giao ngắn cho phiên tiếp theo. Nó mô tả trạng thái hiện tại, không thay thế quyết định trong `docs/DECISIONS.md`.
 
@@ -10,9 +10,9 @@ Tài liệu này là bảng bàn giao ngắn cho phiên tiếp theo. Nó mô t�
 - Remote: `origin` → `https://github.com/nguyenichminhquang1998-lab/portfolio-xquang.git`.
 - Baseline rollback: `d40441d` — giữ nguyên.
 - Preview release: commit `adde177`, tag `v0.9.0-preview` — giữ nguyên.
-- Release hiện tại: commit `75c2a01` (`feat: improve brief flow and client index`), đã commit và push lên `origin/main`.
-- `main` và `origin/main` đang cùng ở commit `75c2a01`.
-- Working tree sạch, không có thay đổi chưa commit.
+- Release hiện tại: commit `75c2a01` (`feat: improve brief flow and client index`) + `0005640` (fix trạng thái CURRENT.md), đã commit và push lên `origin/main`.
+- `main` và `origin/main` đang cùng ở commit `0005640`.
+- Working tree đang có thay đổi chưa commit cho Netlify Function gửi email xác nhận (D-019): `netlify/functions/send-confirmation.js`, `package.json`, `netlify.toml`, `.gitignore` (thêm `node_modules/`, `.netlify/`), cùng cập nhật `docs/ARCHITECTURE.md` và `docs/DECISIONS.md` (D-019, D-020).
 
 ## 2. Những thay đổi đang có trong working tree
 
@@ -49,10 +49,11 @@ Tài liệu này là bảng bàn giao ngắn cho phiên tiếp theo. Nó mô t�
 
 - Local preview: `http://127.0.0.1:4173/` khi server local đang chạy.
 - Netlify preview riêng: `https://sunny-gumdrop-b0e0ae.netlify.app`.
-- Bản Netlify hiện tại được tạo bằng Drop thủ công từ release `69f72a4` và **chưa gồm** thay đổi mục lục/link tài liệu của lượt này.
+- Bản Netlify hiện tại được tạo bằng Drop thủ công từ release `69f72a4` và **chưa gồm** thay đổi mục lục/link tài liệu/Netlify Function của các lượt sau.
 - Netlify đã nhận diện form `project-brief` ở bản deploy cũ.
 - Chưa coi email notification và luồng nhận file mới là đã hoạt động cho tới khi deploy bản mới và gửi thử thật.
-- Chưa cấu hình GitHub auto-deploy.
+- **Xác minh trực tiếp qua Netlify API ngày 2026-09-16**: site `sunny-gumdrop-b0e0ae` (id `f32321bd-a02a-4e28-8f5c-e4780f8f75d3`) có deploy hiện tại `deploy_source: "drop"`, `commit_ref: null`, `branch: null` — **chưa git-linked**, dù có thông tin trước đó cho rằng đã kết nối qua phiên Codex khác. Không tìm thấy site Netlify nào khác trên cùng tài khoản.
+- D-020: XQuang chọn kết nối site này với GitHub repo `portfolio-xquang` để auto-deploy + chạy được Netlify Functions. AI không có API để tự kết nối — cần XQuang thao tác thủ công trong Netlify dashboard.
 
 ## 4. Kiểm tra đã có bằng chứng
 
@@ -106,18 +107,42 @@ Sau lượt sửa mục lục, form brief và client index ngày 2026-09-16:
 - Trang cảm ơn dự phòng hiển thị đúng thông điệp và không có tràn ngang.
 - Email xác nhận tự động cho người gửi chưa được bật: Netlify Forms mặc định chỉ gửi notification tới người quản trị, nên cần dịch vụ gửi mail và địa chỉ người gửi đã xác minh.
 
+Sau lượt thêm Netlify Function gửi email xác nhận ngày 2026-09-16 (D-019/Superseded, D-020):
+
+- `node --check netlify/functions/send-confirmation.js` pass.
+- Đã xác minh trực tiếp qua Netlify API rằng site chưa git-linked (xem mục 3) — trước đó chưa được kiểm tra, chỉ dựa trên giả định.
+- D-019 (Gmail SMTP) bế tắc: tài khoản Google của XQuang không hiển thị mục App Password dù 2-Step Verification đã bật từ 2018 — đã kiểm tra kỹ (kéo hết trang "Bước thứ hai"), xác nhận không có.
+
+Sau lượt đổi sang Resend ngày 2026-09-16 (D-021, thay D-019):
+
+- `node --check netlify/functions/send-confirmation.js` pass sau khi viết lại dùng `fetch` gọi Resend API, bỏ Nodemailer.
+- Đã xoá `package.json` — function không còn dependency npm nào.
+- **Chưa chạy thử được** vì: (1) cần deploy qua git/CLI, không dùng Drop; (2) cần `RESEND_API_KEY`/`CONFIRMATION_FROM_EMAIL` trên Netlify; (3) cần một domain đã verify trên Resend.
+
+Sau lượt mua domain và chốt địa chỉ gửi ngày 2026-09-16/17 (D-022, D-023):
+
+- XQuang đã mua domain **`xquangdenoiseproductionhouse.com`** qua Cloudflare Registrar (không phải subdomain của `denoiseproductionhouse.com` như dự định ban đầu — domain gốc còn trống lúc mua là chuỗi liền không dấu chấm, XQuang xác nhận dùng luôn).
+- Địa chỉ gửi email xác nhận đã chốt: **From** `brief@xquangdenoiseproductionhouse.com`, **Reply-To** `nguyenichminhquang1998@gmail.com`. Netlify Forms admin-notification (báo XQuang khi có brief mới) là luồng riêng, đã hoạt động sẵn, không phụ thuộc Resend.
+- Domain hiện quản lý DNS tại Cloudflare (chưa trỏ bản ghi nào tới Netlify hay Resend).
+
 ## 5. Việc tiếp theo theo thứ tự an toàn
 
 1. XQuang xem lại mục lục hover, form brief và hai client mới trên local preview.
-2. Chọn cách gửi email xác nhận tự động, cung cấp dịch vụ gửi mail cùng địa chỉ người gửi/domain đã xác minh, rồi mới tích hợp và gửi thử.
-3. Sau khi XQuang chốt, tạo commit mới; chỉ push/deploy khi có yêu cầu rõ ràng cho từng hành động.
-4. Khi deploy, xác nhận Netlify nhận diện các trường `phone`, `other-project-type` và `document-link` trong form `project-brief`.
-5. Gửi thử form trên Netlify: nội dung, trạng thái cảm ơn, honeypot, file nhỏ, link tài liệu, notification cho XQuang và email xác nhận cho khách (sau khi đã tích hợp dịch vụ mail).
-6. Chạy PageSpeed Insights và Client Simulation trước vòng public tiếp theo.
+2. **XQuang tự kết nối site `sunny-gumdrop-b0e0ae` với GitHub repo `portfolio-xquang`** trong Netlify dashboard (Site settings → Build & deploy → Continuous deployment → Link repository) — AI không có API để làm thay.
+3. **XQuang tự thêm domain `xquangdenoiseproductionhouse.com` vào Netlify** (Site settings → Domain management → Add a domain) rồi thêm đúng bản ghi DNS Netlify yêu cầu vào Cloudflare (giữ chế độ "DNS only", tắt proxy cam, để Netlify cấp SSL tự động).
+4. **XQuang tự tạo tài khoản Resend, verify domain `xquangdenoiseproductionhouse.com`** (thêm bản ghi TXT/DKIM Resend đưa ra vào Cloudflare DNS), tạo API Key, rồi tự thêm `RESEND_API_KEY` và `CONFIRMATION_FROM_EMAIL=brief@xquangdenoiseproductionhouse.com` vào Netlify Site settings → Environment variables — AI sẽ không nhập hộ giá trị này ở bất kỳ đâu, kể cả khi XQuang dán vào chat.
+5. **XQuang tự thêm Outgoing Webhook** cho form `project-brief` trong Netlify dashboard, trỏ tới `/.netlify/functions/send-confirmation`.
+6. Sau khi bước 2–5 xong, push để Netlify auto-deploy bản có function; chỉ push khi XQuang xác nhận đã sẵn sàng.
+7. Xác nhận Netlify nhận diện các trường `phone`, `other-project-type` và `document-link` trong form `project-brief`.
+8. Gửi thử form trên Netlify: nội dung, trạng thái cảm ơn, honeypot, file nhỏ, link tài liệu, notification cho XQuang và email xác nhận cho khách.
+9. Chạy PageSpeed Insights và Client Simulation trước vòng public tiếp theo.
 
 ## 6. Việc còn treo
 
-- Cấu hình email notification cho XQuang và dịch vụ gửi email xác nhận tự động cho khách.
+- Trỏ DNS Cloudflare cho `xquangdenoiseproductionhouse.com` về Netlify — cần XQuang thao tác thủ công.
+- Kết nối GitHub repo với Netlify (D-020) — cần XQuang thao tác thủ công.
+- Verify domain trên Resend + tạo API Key + cấu hình env var trên Netlify — cần XQuang thao tác thủ công.
+- Thêm Outgoing Webhook cho form `project-brief` trỏ tới function — cần XQuang thao tác thủ công.
+- Test thật email xác nhận sau khi deploy.
 - Kiểm tra giới hạn file/request thực tế trên gói Netlify tại thời điểm deploy.
-- Quyết định GitHub auto-deploy, tên miền Netlify dễ nhớ và domain chính thức.
 - PageSpeed mobile và SEO content là vòng sau; AI SEO riêng sẽ xử lý nội dung SEO theo brief của XQuang.

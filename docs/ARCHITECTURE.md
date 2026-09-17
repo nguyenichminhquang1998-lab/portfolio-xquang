@@ -12,6 +12,7 @@ Tài liệu này mô tả cách website đang được xây, chạy, kiểm tra 
   - `script.js`
 - `assets/` chứa font, ảnh, logo và video đã tối ưu.
 - Không tạo `src/`; với một landing page tĩnh, thêm lớp thư mục này không tạo giá trị và làm deploy thủ công phức tạp hơn.
+- Ngoại lệ duy nhất: `netlify/functions/` chứa 1 Netlify Function backend (gửi email xác nhận, xem mục 4b). Đây là code serverless chạy trên Netlify, tách biệt hoàn toàn khỏi frontend — không thêm build step, bundler hay framework cho `index.html`/`style.css`/`script.js`.
 
 ## 2. Sơ đồ repository
 
@@ -29,7 +30,12 @@ portfolio-xquang/
 ├── index.html
 ├── style.css
 ├── script.js
+├── cam-on.html
 ├── assets/
+├── netlify/
+│   └── functions/
+│       └── send-confirmation.js
+├── netlify.toml
 ├── .gitignore
 └── .git/
 ```
@@ -54,8 +60,20 @@ portfolio-xquang/
 - Netlify Forms giới hạn toàn bộ request ở 8 MB, không phải chỉ phần file; vì vậy giữ ngưỡng tải trực tiếp 7 MB để chừa dung lượng cho các trường còn lại và multipart overhead.
 - Đây là validation phía trình duyệt, không thay thế giới hạn request và kiểm tra của Netlify.
 - Form submit bằng `fetch` với `FormData` để giữ file upload và hiển thị trạng thái cảm ơn ngay trong trang; `action="/cam-on"` là fallback HTML khi JavaScript không chạy.
-- Netlify email notification mặc định gửi cho chủ website và dùng trường `email` làm Reply-To; email xác nhận gửi ngược lại cho khách cần form-triggered function hoặc dịch vụ tự động hóa/email bên ngoài.
+- Netlify email notification mặc định gửi cho chủ website và dùng trường `email` làm Reply-To.
 - Việc Netlify nhận form, nhận file, hiện trạng thái thành công và gửi notification/email phải được test trên bản deploy thật.
+
+### 4b. Netlify Function — email xác nhận cho khách (D-021, thay D-019)
+
+- File: `netlify/functions/send-confirmation.js` (JavaScript thuần, ESM, cùng phong cách vanilla JS với `script.js` — không TypeScript vì cả repo không dùng TypeScript ở đâu khác).
+- Kích hoạt qua **Outgoing Webhook** trên form `project-brief` (cấu hình trong Netlify dashboard, không có API để làm thay) — Netlify POST payload submission tới endpoint mặc định `/.netlify/functions/send-confirmation`.
+- Gửi mail qua **Resend** bằng `fetch` gọi thẳng `https://api.resend.com/emails` — không dùng thư viện ngoài nào (bỏ Nodemailer/Gmail SMTP do D-019 bế tắc, không tạo được App Password). Không còn `package.json`/dependency npm nào.
+- Biến môi trường bắt buộc trên Netlify (Site settings → Environment variables), **tự XQuang thêm, không nhập qua AI**:
+  - `RESEND_API_KEY` — API key tạo trong Resend dashboard.
+  - `CONFIRMATION_FROM_EMAIL` — địa chỉ người gửi, phải thuộc domain đã verify trên Resend.
+- **Ràng buộc chưa xử lý (D-021)**: Resend cần verify 1 domain qua DNS (SPF/DKIM) để gửi tới khách hàng thật; chưa có domain thì chỉ gửi thử được tới chính email đăng ký Resend.
+- `netlify.toml` khai báo `functions = "netlify/functions"` và `publish = "."` — không có lệnh build.
+- **Function chỉ chạy khi site được deploy qua git/CLI** (xem mục 8) — Netlify Drop kéo-thả không bundle function.
 
 ## 5. CSS, motion và accessibility
 
@@ -96,7 +114,8 @@ Sau khi sửa HTML/CSS/asset còn phải kiểm tra đường dẫn file, ID tr�
 ## 8. Hosting hiện tại
 
 - Phương án đã chọn: Netlify Free để preview/test trước.
-- Preview riêng hiện có: `https://sunny-gumdrop-b0e0ae.netlify.app`.
-- Deploy hiện dùng Netlify Drop thủ công; chưa coi GitHub auto-deploy là đã cấu hình.
+- Preview riêng hiện có: `https://sunny-gumdrop-b0e0ae.netlify.app` (site id xác minh qua Netlify API: `f32321bd-a02a-4e28-8f5c-e4780f8f75d3`).
+- **Đã xác minh 2026-09-16 qua Netlify API**: bản deploy production hiện tại có `deploy_source: "drop"`, `commit_ref: null` — tức site **chưa git-linked**, dù trước đó có giả định là đã kết nối. D-020 chốt hướng chuyển sang git-linked; bước kết nối repo (OAuth GitHub App trong Netlify dashboard) do XQuang tự thao tác.
+- Sau khi git-linked, Netlify sẽ auto-deploy mỗi lần push `main`, đồng thời bundle được `netlify/functions/` cho D-019.
 - Bản đang online có thể cũ hơn working tree; xem `docs/CURRENT.md` trước khi đánh giá hoặc deploy.
 - Không chuyển site sang public, đổi domain hoặc cấu hình notification nếu yêu cầu hiện tại chưa cho phép.

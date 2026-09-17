@@ -34,3 +34,6 @@ assets/logos/*
 assets/fonts/*
 !assets/fonts/newsreader-variable.woff2
 !assets/fonts/OFL-Newsreader.txt
+
+# Netlify Functions (backend cho email xác nhận) — build cache local
+.netlify/

@@ -137,6 +137,47 @@
 - Trạng thái: Accepted
 - Quyết định: Thêm Union Marina và Lam Homestay vào Client Index với logo và ảnh nền do XQuang cung cấp; chưa gắn link dự án khi chưa có URL công khai được xác nhận.
 
+### D-019 — Email xác nhận cho khách dùng Gmail của XQuang
+
+- Ngày ghi nhận: 2026-09-16
+- Trạng thái: **Superseded** bởi D-021
+- Quyết định: Email xác nhận tự động gửi cho khách sau khi họ gửi brief dùng chính địa chỉ Gmail của XQuang (`nguyenichminhquang1998@gmail.com`) qua Gmail SMTP (App Password), gọi từ một Netlify Function.
+- Lý do bị thay thế: Tài khoản Google của XQuang không hiển thị/cho tạo App Password (đã kiểm tra 2026-09-16, 2-Step Verification bật từ 2018 nhưng mục App Password không xuất hiện) — hướng này không khả thi.
+
+### D-020 — Kết nối GitHub repo với Netlify
+
+- Ngày ghi nhận: 2026-09-16
+- Trạng thái: Accepted
+- Quyết định: Chuyển site Netlify hiện tại (`sunny-gumdrop-b0e0ae`) từ deploy thủ công (Drop) sang liên kết trực tiếp với GitHub repo `portfolio-xquang` để auto-deploy mỗi lần push `main`, đồng thời cho phép Netlify Functions hoạt động (Drop không bundle function).
+- Lý do: Cần thiết để D-019 (email xác nhận) chạy được; XQuang xác nhận chọn hướng này thay vì tiếp tục deploy thủ công qua Netlify CLI.
+- Ghi chú: Bước kết nối repo cần XQuang tự thao tác trong Netlify dashboard (OAuth GitHub App) — không có API để AI thực hiện thay.
+
+### D-021 — Chuyển sang Resend cho email xác nhận
+
+- Ngày ghi nhận: 2026-09-16
+- Trạng thái: Accepted
+- Quyết định: Email xác nhận cho khách gửi qua **Resend** (dịch vụ transactional email, gọi qua HTTP API từ `netlify/functions/send-confirmation.js`) thay cho Gmail SMTP. Netlify vẫn giữ notification mặc định gửi cho XQuang qua form.
+- Thay thế: D-019.
+- Lý do: D-019 bế tắc vì tài khoản Google không cho tạo App Password.
+- Ghi chú kỹ thuật: Function không còn dependency npm nào (dùng `fetch` có sẵn trong runtime); đã bỏ `package.json`. Biến môi trường cần trên Netlify: `RESEND_API_KEY`, `CONFIRMATION_FROM_EMAIL`.
+
+### D-022 — Domain chính thức: xquangdenoiseproductionhouse.com
+
+- Ngày ghi nhận: 2026-09-16
+- Trạng thái: Accepted
+- Quyết định: XQuang đã mua domain **`xquangdenoiseproductionhouse.com`** qua Cloudflare Registrar. Domain này dùng làm domain public chính thức cho site (thay `sunny-gumdrop-b0e0ae.netlify.app`) và cũng dùng để verify gửi email qua Resend (D-021), giải quyết ràng buộc domain còn treo ở D-021.
+- Lý do: Dự định ban đầu là subdomain `xquang.denoiseproductionhouse.com`, nhưng khi mua trên Cloudflare, domain gốc còn trống là `xquangdenoiseproductionhouse.com` (không dấu chấm) — XQuang xác nhận dùng domain này, không cần mua thêm domain mẹ `denoiseproductionhouse.com` riêng.
+- Email gửi tự động (Resend) dùng địa chỉ thuộc domain này làm From, nhưng Reply-To vẫn là Gmail cá nhân `nguyenichminhquang1998@gmail.com` — khách bấm trả lời vẫn về đúng hộp thư XQuang dùng hàng ngày.
+- DNS quản lý tại Cloudflare (không chuyển nameserver về Netlify) để giữ linh hoạt trỏ đồng thời về Netlify (web) và Resend (email).
+
+### D-023 — Địa chỉ gửi email xác nhận
+
+- Ngày ghi nhận: 2026-09-16
+- Trạng thái: Accepted
+- Quyết định: Địa chỉ **From** cho email xác nhận (D-021) là `brief@xquangdenoiseproductionhouse.com`. Địa chỉ **Reply-To** vẫn là Gmail cá nhân `nguyenichminhquang1998@gmail.com` — khách bấm trả lời sẽ về thẳng hộp thư này.
+- Lý do: Resend bắt buộc From thuộc domain đã verify DNS (không thể dùng `@gmail.com` làm From); Reply-To tách biệt cho phép giữ nguyên thói quen đọc/trả lời qua Gmail của XQuang mà không cần tạo hộp thư thật trên domain mới.
+- Ghi chú: Đây chỉ là giá trị biến môi trường `CONFIRMATION_FROM_EMAIL` trên Netlify, không phải hộp thư cần tạo — không có mailbox nào tồn tại ở `brief@xquangdenoiseproductionhouse.com`.
+
 ## Chưa chốt
 
-- GitHub auto-deploy Netlify và domain public chính thức.
+- Tên miền Netlify dễ nhớ (nếu muốn khác `xquangdenoiseproductionhouse.com`) — hiện đã đủ dùng, mục này chỉ còn mở nếu XQuang muốn đổi sau.

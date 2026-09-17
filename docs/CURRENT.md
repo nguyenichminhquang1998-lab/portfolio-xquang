@@ -125,24 +125,31 @@ Sau lượt mua domain và chốt địa chỉ gửi ngày 2026-09-16/17 (D-022,
 - Địa chỉ gửi email xác nhận đã chốt: **From** `brief@xquangdenoiseproductionhouse.com`, **Reply-To** `nguyenichminhquang1998@gmail.com`. Netlify Forms admin-notification (báo XQuang khi có brief mới) là luồng riêng, đã hoạt động sẵn, không phụ thuộc Resend.
 - Domain hiện quản lý DNS tại Cloudflare (chưa trỏ bản ghi nào tới Netlify hay Resend).
 
+Sau lượt hoàn tất và xác minh end-to-end ngày 2026-09-17:
+
+- XQuang đã tự hoàn thành toàn bộ thao tác thủ công: kết nối GitHub repo với Netlify (D-020), trỏ domain `xquangdenoiseproductionhouse.com` về Netlify qua Cloudflare (DNS verified; SSL/HTTPS cấp tự động, có thể mất tới ~24h), verify domain trên Resend (DKIM + SPF qua CNAME + DMARC `p=none`), tạo `RESEND_API_KEY`, và thêm Outgoing Webhook (HTTP POST request) cho form `project-brief` trỏ tới `/.netlify/functions/send-confirmation`.
+- Sự cố gặp phải và đã xử lý trong lượt này:
+  - Biến môi trường `RESEND_API_KEY` bị đặt tên sai chữ hoa/thường lúc đầu (`resend_api_key`) — Netlify Functions đọc `Netlify.env.get()` phân biệt hoa/thường tuyệt đối; đã sửa lại đúng tên.
+  - Biến `CONFIRMATION_FROM_EMAIL` (do AI set qua API) không được function đọc thấy dù đã "upserted" — sửa bằng cách set lại với `scopes: ["all"]` thay vì chỉ `["functions"]`, kèm trigger deploy mới (Netlify Functions "chụp" biến môi trường tại thời điểm deploy, không tự cập nhật real-time khi biến đổi sau khi đã deploy).
+  - Webhook (Outgoing Webhook / HTTP POST request) bị Netlify **tự động Disabled** sau 6 lần liên tiếp nhận lỗi HTTP 500 từ function (xảy ra trong lúc 2 biến môi trường trên còn sai) — "Edit → Save" không đủ để reset trạng thái Disabled; phải **xoá hẳn và tạo lại notification mới** mới hết bị vô hiệu hoá.
+  - Domain trên Resend hiện còn 2 cảnh báo không chặn việc gửi: "Invalid SES fallback" (đường dự phòng phụ, đường chính SPF/DKIM đã Verified) và "Conflicting MX records" dưới "Enable Receiving" (không liên quan vì không cần nhận mail tại domain này — có thể tắt toggle Enable Receiving để dọn cảnh báo).
+- **Đã xác minh thành công bằng test thật, đi đúng đường Netlify Forms → Outgoing Webhook → Function → Resend** (không phải gọi thẳng function): submission thật gửi lúc 18:07 (giờ VN) nhận được email xác nhận đúng lúc đó, nội dung khớp chính xác; lặp lại thành công lần 2. Function log xác nhận cả 2 lần chạy sạch, không lỗi.
+- Test riêng với 1 địa chỉ Gmail phụ (`nguyenichminhquang19984@gmail.com`, tài khoản vừa qua sự cố bảo mật/khôi phục) không nhận được email dù function/Resend đều xác nhận đã gửi thành công (không nằm trong Suppressions của Resend) — kết luận đây là hành vi lọc mail riêng của Gmail cho tài khoản đó, không phải lỗi hệ thống; không cần xử lý thêm.
+- Đã dọn lại message lỗi trong `send-confirmation.js` về dạng gọn (bỏ chi tiết debug tên biến thiếu) sau khi xác minh xong.
+- **Kết luận: tính năng email xác nhận cho khách đã hoàn thành và hoạt động đúng trên production.**
+
 ## 5. Việc tiếp theo theo thứ tự an toàn
 
-1. XQuang xem lại mục lục hover, form brief và hai client mới trên local preview.
-2. **XQuang tự kết nối site `sunny-gumdrop-b0e0ae` với GitHub repo `portfolio-xquang`** trong Netlify dashboard (Site settings → Build & deploy → Continuous deployment → Link repository) — AI không có API để làm thay.
-3. **XQuang tự thêm domain `xquangdenoiseproductionhouse.com` vào Netlify** (Site settings → Domain management → Add a domain) rồi thêm đúng bản ghi DNS Netlify yêu cầu vào Cloudflare (giữ chế độ "DNS only", tắt proxy cam, để Netlify cấp SSL tự động).
-4. **XQuang tự tạo tài khoản Resend, verify domain `xquangdenoiseproductionhouse.com`** (thêm bản ghi TXT/DKIM Resend đưa ra vào Cloudflare DNS), tạo API Key, rồi tự thêm `RESEND_API_KEY` và `CONFIRMATION_FROM_EMAIL=brief@xquangdenoiseproductionhouse.com` vào Netlify Site settings → Environment variables — AI sẽ không nhập hộ giá trị này ở bất kỳ đâu, kể cả khi XQuang dán vào chat.
-5. **XQuang tự thêm Outgoing Webhook** cho form `project-brief` trong Netlify dashboard, trỏ tới `/.netlify/functions/send-confirmation`.
-6. Sau khi bước 2–5 xong, push để Netlify auto-deploy bản có function; chỉ push khi XQuang xác nhận đã sẵn sàng.
-7. Xác nhận Netlify nhận diện các trường `phone`, `other-project-type` và `document-link` trong form `project-brief`.
-8. Gửi thử form trên Netlify: nội dung, trạng thái cảm ơn, honeypot, file nhỏ, link tài liệu, notification cho XQuang và email xác nhận cho khách.
-9. Chạy PageSpeed Insights và Client Simulation trước vòng public tiếp theo.
+1. XQuang xem lại mục lục hover, form brief và hai client mới trên local preview (vẫn còn từ trước, chưa có xác nhận đã xem).
+2. Đợi HTTPS cho `xquangdenoiseproductionhouse.com` cấp xong tự động (SSL verify đã pass, đang chờ provision — có thể đã xong, kiểm tra lại khi cần).
+3. Cân nhắc tắt toggle "Enable Receiving" trên Resend domain settings để dọn cảnh báo "Conflicting MX records" (không bắt buộc, không ảnh hưởng chức năng).
+4. Xác nhận Netlify nhận diện đúng các trường `phone`, `other-project-type`, `document-link` trong submission thật (đã thấy trong dữ liệu submission, coi như đạt).
+5. Đăng ký Google Search Console + nộp sitemap để đẩy nhanh việc Google index domain mới — vòng sau, không gấp.
+6. Chạy PageSpeed Insights và Client Simulation trước vòng public tiếp theo.
 
 ## 6. Việc còn treo
 
-- Trỏ DNS Cloudflare cho `xquangdenoiseproductionhouse.com` về Netlify — cần XQuang thao tác thủ công.
-- Kết nối GitHub repo với Netlify (D-020) — cần XQuang thao tác thủ công.
-- Verify domain trên Resend + tạo API Key + cấu hình env var trên Netlify — cần XQuang thao tác thủ công.
-- Thêm Outgoing Webhook cho form `project-brief` trỏ tới function — cần XQuang thao tác thủ công.
-- Test thật email xác nhận sau khi deploy.
-- Kiểm tra giới hạn file/request thực tế trên gói Netlify tại thời điểm deploy.
+- HTTPS cho domain chính có thể vẫn đang provision — không cần hành động, chỉ cần đợi/kiểm tra lại.
+- Google Search Console + SEO index — vòng sau, không gấp.
+- Kiểm tra giới hạn file/request thực tế trên gói Netlify nếu có submission file lớn trong tương lai.
 - PageSpeed mobile và SEO content là vòng sau; AI SEO riêng sẽ xử lý nội dung SEO theo brief của XQuang.

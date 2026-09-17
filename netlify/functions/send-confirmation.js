@@ -22,8 +22,12 @@ export default async (req) => {
   const fromAddress = Netlify.env.get("CONFIRMATION_FROM_EMAIL");
 
   if (!resendApiKey || !fromAddress) {
-    console.error("Missing RESEND_API_KEY or CONFIRMATION_FROM_EMAIL env var");
-    return new Response("Email service not configured", { status: 500 });
+    const missing = [
+      !resendApiKey ? "RESEND_API_KEY" : null,
+      !fromAddress ? "CONFIRMATION_FROM_EMAIL" : null,
+    ].filter(Boolean);
+    console.error("Missing env var(s)", missing);
+    return new Response(`Email service not configured — missing: ${missing.join(", ")}`, { status: 500 });
   }
 
   const subject = "Đã nhận brief của bạn — XQuang / Denoise Production House";

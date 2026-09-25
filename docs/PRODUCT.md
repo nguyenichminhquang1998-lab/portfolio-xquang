@@ -38,14 +38,14 @@ Không tự thêm section About, Services hoặc Testimonials theo mẫu nếu c
 
 ## 4. Dự án tiêu biểu
 
-| Thứ tự | Dự án | Loại / năm | Vai trò XQuang | Vimeo |
+| Thứ tự | Dự án | Loại / năm | Vai trò XQuang | YouTube |
 |---|---|---|---|---|
-| 01 | ORPC | TVC / 2026 | Quay phim và flycam | `1224514252` |
-| 02 | Thép Nhật Tiến | TVC / 2025 | Quay và dựng | `1224523376` |
-| 03 | Thủy sản Anh Minh | TVC / 2023 | Quay và dựng | `1224515288` |
-| 04 | Pullupinmymind | MV / 2025 | Đạo diễn, DOP, quay, dựng, color | `1224498861` |
-| 05 | Còn Chờ Là Còn Nhớ | MV / 2025 | Đồng đạo diễn, quay và dựng | `1224505164` |
-| 06 | Somewhere Between The Sea And The Sunset | Film cá nhân / 2026 | Quay và dựng | `1224508727` |
+| 01 | ORPC | TVC / 2026 | Quay phim và flycam | `S1VTem1-NZw` |
+| 02 | Thép Nhật Tiến | TVC / 2025 | Quay và dựng | `3Lm8Pd5JWVA` |
+| 03 | Thủy sản Anh Minh | TVC / 2023 | Quay và dựng | `9Ov6McDhgJ0` |
+| 04 | Pullupinmymind | MV / 2025 | Đạo diễn, DOP, quay, dựng, color | `EIOZcO9POg4` |
+| 05 | Còn Chờ Là Còn Nhớ | MV / 2025 | Đồng đạo diễn, quay và dựng | `loGFcXVQLhs` |
+| 06 | Somewhere Between The Sea And The Sunset | Film cá nhân / 2026 | Quay và dựng | `Vv86c2cxzPI` |
 
 XQuang đã xác nhận quyền công khai đối với các dự án đang hiển thị. Dự án chưa xác nhận quyền footage, nhạc, BTS, logo hoặc hình ảnh nhân vật không được đưa lên trang.
 
@@ -119,7 +119,7 @@ Thông tin liên hệ đã xác nhận:
 - Điện thoại: `0326826513`
 - Zalo: `0822394289` và QR đã cung cấp.
 - Facebook: `https://www.facebook.com/minhquang.nguyen.1675/`
-- Vimeo: `https://vimeo.com/user40282194`
+- YouTube: `https://www.youtube.com/@nguyenichminhquang2143`
 - Địa chỉ: Số 1, lô 8A Lê Hồng Phong, Ngô Quyền, Hải Phòng.
 
 ## 9. Art direction

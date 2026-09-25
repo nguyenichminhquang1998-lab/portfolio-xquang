@@ -178,6 +178,21 @@
 - Lý do: Resend bắt buộc From thuộc domain đã verify DNS (không thể dùng `@gmail.com` làm From); Reply-To tách biệt cho phép giữ nguyên thói quen đọc/trả lời qua Gmail của XQuang mà không cần tạo hộp thư thật trên domain mới.
 - Ghi chú: Đây chỉ là giá trị biến môi trường `CONFIRMATION_FROM_EMAIL` trên Netlify, không phải hộp thư cần tạo — không có mailbox nào tồn tại ở `brief@xquangdenoiseproductionhouse.com`.
 
+### D-024 — Chuyển video nhúng và link video sang YouTube
+
+- Ngày ghi nhận: 2026-09-25
+- Trạng thái: Accepted
+- Quyết định: Toàn bộ video nhúng (6 dự án tiêu biểu + 3 hồ sơ dự án) chuyển từ Vimeo sang YouTube, nhúng qua `youtube-nocookie.com` với poster facade giữ nguyên. Link kênh ở khu Liên hệ/footer đổi thành `https://www.youtube.com/@nguyenichminhquang2143`; ô Wavy Channel trong Client Index trỏ tới bản YouTube của MV "Tết Về Hải Phòng". Web không còn link Vimeo nào.
+- Thay thế: Quy tắc "Nhúng iframe Vimeo" trong phần Video/embed dài của `CLAUDE.md`/`AGENTS.md`.
+- Lý do: Tài khoản Vimeo của XQuang sắp hết hạn; XQuang đã tải lại video lên YouTube và gửi link.
+
+### D-025 — Kicker Hero đổi thành SHOWREEL
+
+- Ngày ghi nhận: 2026-09-25
+- Trạng thái: Accepted
+- Quyết định: Kicker đầu trang đổi từ `SCN 01 / HERO / HẢI PHÒNG` thành `SCN 01 / SHOWREEL / HẢI PHÒNG`.
+- Lý do: "HERO" là thuật ngữ web, không nói về công việc; "SHOWREEL" khớp với video showreel chạy nền ở đầu trang.
+
 ## Chưa chốt
 
 - Tên miền Netlify dễ nhớ (nếu muốn khác `xquangdenoiseproductionhouse.com`) — hiện đã đủ dùng, mục này chỉ còn mở nếu XQuang muốn đổi sau.

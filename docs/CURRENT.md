@@ -1,6 +1,6 @@
 # CURRENT — Trạng thái làm việc hiện tại
 
-Cập nhật: **2026-09-17 — Asia/Saigon**
+Cập nhật: **2026-09-25 — Asia/Saigon**
 
 Tài liệu này là bảng bàn giao ngắn cho phiên tiếp theo. Nó mô tả trạng thái hiện tại, không thay thế quyết định trong `docs/DECISIONS.md`.
 
@@ -10,9 +10,9 @@ Tài liệu này là bảng bàn giao ngắn cho phiên tiếp theo. Nó mô t�
 - Remote: `origin` → `https://github.com/nguyenichminhquang1998-lab/portfolio-xquang.git`.
 - Baseline rollback: `d40441d` — giữ nguyên.
 - Preview release: commit `adde177`, tag `v0.9.0-preview` — giữ nguyên.
-- Release hiện tại: commit `75c2a01` (`feat: improve brief flow and client index`) + `0005640` (fix trạng thái CURRENT.md), đã commit và push lên `origin/main`.
-- `main` và `origin/main` đang cùng ở commit `0005640`.
-- Working tree đang có thay đổi chưa commit cho Netlify Function gửi email xác nhận (D-019): `netlify/functions/send-confirmation.js`, `package.json`, `netlify.toml`, `.gitignore` (thêm `node_modules/`, `.netlify/`), cùng cập nhật `docs/ARCHITECTURE.md` và `docs/DECISIONS.md` (D-019, D-020).
+- Netlify đã kết nối GitHub: mỗi lần push `main` là tự động deploy lên `https://xquangdenoiseproductionhouse.com`.
+- Commit đã push gần nhất trước lượt này: `6d1e675` (căn tiêu đề liên hệ/brief + placeholder brief).
+- Lượt 2026-09-25: chuyển toàn bộ video/link Vimeo sang YouTube (D-024) và đổi kicker đầu trang thành SHOWREEL (D-025) — xem mục 4.
 
 ## 2. Những thay đổi đang có trong working tree
 
@@ -47,13 +47,10 @@ Tài liệu này là bảng bàn giao ngắn cho phiên tiếp theo. Nó mô t�
 
 ## 3. Preview và hosting
 
-- Local preview: `http://127.0.0.1:4173/` khi server local đang chạy.
-- Netlify preview riêng: `https://sunny-gumdrop-b0e0ae.netlify.app`.
-- Bản Netlify hiện tại được tạo bằng Drop thủ công từ release `69f72a4` và **chưa gồm** thay đổi mục lục/link tài liệu/Netlify Function của các lượt sau.
-- Netlify đã nhận diện form `project-brief` ở bản deploy cũ.
-- Chưa coi email notification và luồng nhận file mới là đã hoạt động cho tới khi deploy bản mới và gửi thử thật.
-- **Xác minh trực tiếp qua Netlify API ngày 2026-09-16**: site `sunny-gumdrop-b0e0ae` (id `f32321bd-a02a-4e28-8f5c-e4780f8f75d3`) có deploy hiện tại `deploy_source: "drop"`, `commit_ref: null`, `branch: null` — **chưa git-linked**, dù có thông tin trước đó cho rằng đã kết nối qua phiên Codex khác. Không tìm thấy site Netlify nào khác trên cùng tài khoản.
-- D-020: XQuang chọn kết nối site này với GitHub repo `portfolio-xquang` để auto-deploy + chạy được Netlify Functions. AI không có API để tự kết nối — cần XQuang thao tác thủ công trong Netlify dashboard.
+- Local preview: `python -m http.server 4173` ở root rồi mở `http://127.0.0.1:4173/`.
+- Site chính thức: `https://xquangdenoiseproductionhouse.com` (HTTPS đã cấp xong). Địa chỉ Netlify phụ vẫn chạy: `https://sunny-gumdrop-b0e0ae.netlify.app` (site id `f32321bd-a02a-4e28-8f5c-e4780f8f75d3`).
+- Site đã git-linked (D-020, XQuang tự kết nối trong Netlify dashboard): push `main` là tự deploy, kèm Netlify Function.
+- Form `project-brief` nhận đủ các trường mới; email xác nhận cho khách đã test thật thành công (xem mục 4).
 
 ## 4. Kiểm tra đã có bằng chứng
 
@@ -138,18 +135,25 @@ Sau lượt hoàn tất và xác minh end-to-end ngày 2026-09-17:
 - Đã dọn lại message lỗi trong `send-confirmation.js` về dạng gọn (bỏ chi tiết debug tên biến thiếu) sau khi xác minh xong.
 - **Kết luận: tính năng email xác nhận cho khách đã hoàn thành và hoạt động đúng trên production.**
 
+Sau lượt chuyển Vimeo → YouTube ngày 2026-09-25 (D-024, D-025):
+
+- `index.html`: 9 nút phát video (6 dự án tiêu biểu + 3 hồ sơ) dùng `data-youtube-id`; nhãn "Phát phim / YouTube"; ô Wavy Channel trỏ `youtube.com/watch?v=N5tc6fiYvao`; link kênh ở Liên hệ và footer trỏ `youtube.com/@nguyenichminhquang2143`; kicker đầu trang `SCN 01 / SHOWREEL / HẢI PHÒNG`. `grep -i vimeo index.html` không còn kết quả.
+- `script.js`: facade đọc `data-youtube-id`, kiểm tra ID đúng 11 ký tự, tạo iframe `youtube-nocookie.com/embed/<id>?autoplay=1&rel=0`.
+- `node --check script.js` pass; không có CSP chặn iframe YouTube.
+- Local preview: 9 ID đúng thứ tự; bấm video ORPC (Selected Work) và Hẹn Em Ở Lễ Đường (case study) tạo đúng iframe YouTube.
+- YouTube oEmbed trả HTTP 200 cho cả 8 video (7 video nhúng + MV Tết Về Hải Phòng) — tức là video công khai/không liệt kê và cho phép nhúng; tên video khớp đúng từng dự án.
+- Chưa xác minh bằng mắt video phát được trên bản live sau deploy — XQuang cần bấm thử 1–2 video trên `xquangdenoiseproductionhouse.com`.
+
 ## 5. Việc tiếp theo theo thứ tự an toàn
 
-1. XQuang xem lại mục lục hover, form brief và hai client mới trên local preview (vẫn còn từ trước, chưa có xác nhận đã xem).
-2. Đợi HTTPS cho `xquangdenoiseproductionhouse.com` cấp xong tự động (SSL verify đã pass, đang chờ provision — có thể đã xong, kiểm tra lại khi cần).
-3. Cân nhắc tắt toggle "Enable Receiving" trên Resend domain settings để dọn cảnh báo "Conflicting MX records" (không bắt buộc, không ảnh hưởng chức năng).
-4. Xác nhận Netlify nhận diện đúng các trường `phone`, `other-project-type`, `document-link` trong submission thật (đã thấy trong dữ liệu submission, coi như đạt).
-5. Đăng ký Google Search Console + nộp sitemap để đẩy nhanh việc Google index domain mới — vòng sau, không gấp.
-6. Chạy PageSpeed Insights và Client Simulation trước vòng public tiếp theo.
+1. XQuang bấm thử vài video trên bản live để xác nhận YouTube phát trong trang.
+2. Cân nhắc tắt toggle "Enable Receiving" trên Resend domain settings để dọn cảnh báo "Conflicting MX records" (không bắt buộc, không ảnh hưởng chức năng).
+3. Đăng ký Google Search Console + nộp sitemap để đẩy nhanh việc Google index domain mới — vòng sau, không gấp.
+4. Chạy PageSpeed Insights và Client Simulation trước vòng public tiếp theo.
 
 ## 6. Việc còn treo
 
-- HTTPS cho domain chính có thể vẫn đang provision — không cần hành động, chỉ cần đợi/kiểm tra lại.
+- Tài khoản Vimeo cũ có thể để hết hạn — web không còn phụ thuộc Vimeo.
 - Google Search Console + SEO index — vòng sau, không gấp.
 - Kiểm tra giới hạn file/request thực tế trên gói Netlify nếu có submission file lớn trong tương lai.
 - PageSpeed mobile và SEO content là vòng sau; AI SEO riêng sẽ xử lý nội dung SEO theo brief của XQuang.

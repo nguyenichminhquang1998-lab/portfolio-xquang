@@ -140,6 +140,8 @@ Phần trên là toàn bộ quy tắc cũ và được giữ nguyên. Phần b�
 - Gửi brief thành công hiển thị ô cảm ơn ngay trong trang; `/cam-on` là trang cảm ơn dự phòng khi JavaScript không chạy.
 - Netlify Forms mặc định không tự gửi email xác nhận cho người điền form. Không được nói auto-email đã hoạt động trước khi có dịch vụ gửi mail, địa chỉ người gửi hợp lệ và test thật trên bản deploy.
 - Client Index có thêm Union Marina và Lam Homestay bằng logo/ảnh thật do XQuang cung cấp; chưa có link dự án công khai thì không tự tạo link.
+- **Quy tắc mới thay thế phần "Video/embed dài" ở trên:** video dài nhúng YouTube qua `youtube-nocookie.com` thay cho Vimeo, vẫn dùng poster facade (chỉ tạo iframe khi người dùng bấm "Phát phim / YouTube"). Web không còn link Vimeo (D-024).
+- Kicker đầu trang là `SCN 01 / SHOWREEL / HẢI PHÒNG` (D-025).
 
 ## Thứ tự đọc context bắt buộc
 

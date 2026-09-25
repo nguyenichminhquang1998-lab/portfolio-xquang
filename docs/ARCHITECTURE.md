@@ -47,7 +47,7 @@ portfolio-xquang/
 - Video mobile dài 4–5 giây, không tiếng, dưới 1,5 MB; chỉ gán source khi Hero vào viewport bằng `IntersectionObserver`.
 - JavaScript phải kiểm tra `window.matchMedia('(prefers-reduced-motion: reduce)')` trước khi gán autoplay.
 - Không dùng Network Information API.
-- Vimeo dưới fold dùng poster facade; iframe chỉ được tạo sau khi người dùng bấm phát.
+- Video dài dưới fold nhúng YouTube (`youtube-nocookie.com/embed/<id>?autoplay=1&rel=0`) qua poster facade; iframe chỉ được tạo sau khi người dùng bấm phát. ID lưu ở thuộc tính `data-youtube-id` (11 ký tự) trên từng `.video-facade` (D-024).
 - File media gốc dung lượng lớn không đưa vào Git hoặc gói deploy; `.gitignore` chỉ cho phép các asset web đã tối ưu cần thiết.
 
 ## 4. Form Netlify

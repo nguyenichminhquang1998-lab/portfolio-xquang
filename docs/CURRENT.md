@@ -144,6 +144,13 @@ Sau lượt chuyển Vimeo → YouTube ngày 2026-09-25 (D-024, D-025):
 - YouTube oEmbed trả HTTP 200 cho cả 8 video (7 video nhúng + MV Tết Về Hải Phòng) — tức là video công khai/không liệt kê và cho phép nhúng; tên video khớp đúng từng dự án.
 - Chưa xác minh bằng mắt video phát được trên bản live sau deploy — XQuang cần bấm thử 1–2 video trên `xquangdenoiseproductionhouse.com`.
 
+Sau lượt bo góc nút ngày 2026-10-01 (lần 2 — lần đầu 2026-09-28 làm trong một git worktree đã bị xoá trước khi commit nên thay đổi bị mất):
+
+- `style.css` dòng ~317: `.button` (áp dụng cho `.button--primary`/`.button--secondary`, tức 4 nút "Gửi brief" ×2, "Xem dự án", "Về đầu trang") thêm `border-radius: 4px`.
+- Phạm vi đã chốt cùng XQuang trước đó: chỉ bo nút chữ (CTA), **không** bo 9 khung ảnh/video `.video-facade`.
+- Kiểm tra bằng `getComputedStyle` trên local preview: cả 4 nút `.button` đều trả về `border-radius: 4px`.
+- `git diff --check` pass.
+
 ## 5. Việc tiếp theo theo thứ tự an toàn
 
 1. XQuang bấm thử vài video trên bản live để xác nhận YouTube phát trong trang.
